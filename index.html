@@ -1,0 +1,178 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 4 Assignment 2:C1</title>
+    <style>
+            /*Beginning of internal CSS styling for the page */
+        body{background-image: url('images/background8.jpg');  background-position:center; background-repeat: no-repeat;}
+            /*Main div styles, margin set to auto to center on the page*/
+        #mainContent{width:600px; height:450px; margin: auto; padding-top: 60px; background-color:
+         rgb(69, 84, 88); text-align: center; border: 2px solid rgb(201, 190, 177); border-radius: 10px ;}
+            /*main h1 tag heading style*/    
+        h1{text-align: center; color:aliceblue; font-size:40px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}  
+            /*Styles for heading in the main div*/    
+        #divHeading{font-size:x-large; color: rgb(199, 212, 181);
+                    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;}  
+            /*User text input tab style*/
+        input{margin-top: 35px; margin-right: 20px; height:25px; text-align: center; color:rgb(85, 83, 83); border:1px solid darkslategrey; border-radius:3px; outline: 1px solid rgb(99, 130, 161);}
+            /* Calculate age button style*/
+        button{height:30px; border:1px solid rgb(177, 212, 212); border-radius:3px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+               color: darkslategrey; font-weight: 550;}
+             /*Used a box shodow on the button after click instead of just removing the outline*/    
+        button:focus{ box-shadow: 2px 2px darkslategrey; outline:navajowhite;} 
+             /*Styles for the outputted results after the calculations are done*/    
+        .valueStyle{ margin-top: 70px; height: 30px; width:340px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; color:rgb(97, 95, 95);  background-color: aliceblue;
+                          margin-left:auto;margin-right: auto; text-align:center;  position:relative; border:1px solid darkslategrey; border-radius:3px; align-items:inherit;
+                          padding-top: 10px; outline: 1px solid rgb(99, 130, 161); }    
+             /*Styles for the placeholder text in the two output paragraphs*/    
+        .resultBox{position:absolute; top:18%; right:43%; color:rgb(184, 179, 179); font-size:large;}  
+
+             /*End of CSS styling for the page*/   
+    </style>
+</head>
+<body>
+    
+        <header>
+            <h1>
+                Age Calculator
+            </h1>
+        </header>
+                 <!--Beginning of html page structure-->
+        <div id = "mainContent">
+            <span id = "divHeading">Please Input Your Date of Birth</span> <br>
+                 <!--Input tag uses the clearTab function to clear the text onclick-->
+            <input type="text" placeholder="YYYY/MM/DD" minlength ="10" maxlength="10" id="userInput" onclick="clearTab()"> <!---->
+                 <!--Calculate age button uses the calculateAgeString function-->
+            <button id= "ageButton" type = "button" onclick = "calculateAgeString()">Lets Calculate Your Age</button>
+            <br>
+                 <!--Both p tags use class valueStyle for style calculated results are displayed here-->
+            <p id = "calculatedValue" class = "valueStyle"><span class = "resultBox">Result</span></p>
+            <br>
+                 <!--A button to refresh the page for convenience-->
+            <button id="refresh" onclick="refreshPage()">Reload Page</button>
+                 <!--Error messages are displayed here-->
+            <p id = "errorMsg" class = "valueStyle">
+                <span class = "resultBox"> ErrorMsg</span>
+            </p>
+         </div>
+
+    <script>
+                /*Notes: I have formatted the date in YYYY--MM-DD for calculation purposes,
+                 note I had used the date input built into javascript but there was no need for error handling etc 
+                 so I reverted back to use the text input so i could satisfy the question requirements for this*/
+                 
+                /*Declare the global variables for later use in the calculateAgeString() function*/ 
+                /*Create a new instance of the date object */        
+        var date = new Date();
+                /* Format the date and store in variable formattedDates, this uses the formatDate() function below*/
+        var formattedDates = formatDate(date);
+                
+        var testInput = 1;
+        var testDate = 1;
+        var testYear;
+        var testMonth;
+        var testDay;
+        var over100;
+                /*Beginning of function to do all of the calculations*/
+        function calculateAgeString(){
+             var inputValue = document.getElementById("userInput").value; 
+             var formattedDates = formatDate(date);
+             var clear = "";
+             var testYear = inputValue.slice(0, 4) ;
+             var testMonth = inputValue.slice(5,7);
+             var testDay = inputValue.slice(8,10);
+                 /* start of try catch block with error handling for incorrect user inputs*/
+             try {
+                 if(inputValue === "") throw "You have not entered a Date!";
+                 if(inputValue.length < 10) throw "You need to enter 10 characters!"
+                 if(inputValue[2] == "-" || inputValue[2] == "/" || inputValue[5] == "-" || inputValue[5] == "/") throw "Wrong Format, You need the Year Input First";
+                 if(isNaN(inputValue[0, 1, 2, 3, 5, 6, 8, 9])) throw "Text is not a valid Date";
+                 if(testYear % 4 == 0 && testYear % 100 == 0 && testYear % 400 == 0 && testMonth == 02 && testDay > 29) throw "There are only 29 days in a leap year!";
+                 if(testYear % 4 == 0 && testYear % 100 != 0 && testYear % 400 != 0 && testMonth == 02 && testDay > 29) throw "There are only 29 days in a leap year!";
+                 if(testYear % 4 == 0 && testYear % 100 == 0 && testYear % 400 != 0 && testMonth == 02 && testDay > 28) throw "This Year was not a leap year";
+                 if(testDay > 30 && testMonth == 04) throw "Out of Range";
+                 if(testDay > 30 && testMonth == 06) throw "Out of Range";
+                 if(testDay > 30 && testMonth == 09) throw "Out of Range";
+                 if(testDay > 30 && testMonth == 11) throw "Out of Range";
+                 if(testDay > 31 && testMonth == 01) throw "Out of Range";
+                 if(testDay > 31 && testMonth == 03) throw "Out of Range";
+                 if(testDay > 31 && testMonth == 05) throw "Out of Range";
+                 if(testDay > 31 && testMonth == 07) throw "Out of Range";
+                 if(testDay > 31 && testMonth == 09) throw "Out of Range";  
+                 if(testMonth < 01 || testMonth > 12) throw "This month is out of range! Please select between 01 and 12";
+                 if(testMonth == 02 && testYear % 4 != 0 && testDay > 28) throw "There are only 28 days in February";  
+                 /*Beginning of code to subtract the user input values from the formatted date,*/
+            if(formattedDates.length==10 && inputValue.length==10 && inputValue!=""){
+                var str1 = formattedDates.slice(0,4)
+                var str2 = formattedDates.slice(5,7)
+                var str3 = formattedDates.slice(8,10);
+                var stringInt = str1 + str2 + str3;  
+                var str4 = inputValue.slice(0,4)
+                var str5 = inputValue.slice(5,7)     
+                var str6 = inputValue.slice(8,10);
+                var stringInt2 = str4 + str5 + str6;  
+                var dispValue = stringInt - stringInt2;  /* subtraction done here with these variables as formattedDates-inputValue results in NaN*/
+                var dispValue2 = dispValue.toString();
+                var calculatedValue = dispValue2.slice(0,2);
+                var over100 = dispValue2.slice(0,3);
+                var under10 = dispValue2.slice(0,1);
+                 /*Checking the result of the calculation and deciding how much of it to output depending on age*/
+             if (dispValue2.length >= 7){
+                document.getElementById("calculatedValue").innerHTML= "Your Age Is: " + over100;
+            
+             }else if(dispValue2.length == 5 ){
+                document.getElementById("calculatedValue").innerHTML= "Your Age Is: " + under10;
+
+             }else if(dispValue2.length == 4){
+                document.getElementById("calculatedValue").innerHTML="You are under one year old";    
+             
+                /*last else to deal with the common two digit output*/
+             }else{
+                document.getElementById("calculatedValue").innerHTML= "Your Age Is: " + calculatedValue;
+                document.getElementById("userInput").value=clear;
+             }
+            }  /*End of main if statement that crates the two variables stringInt + stringInt2; subtracts them and stores the result in dispValue */
+               
+               /*End of try catch block*/
+            } catch (error) {
+                    document.getElementById("errorMsg").innerHTML= error;
+            }  /*End of catch block*/
+            
+        }      /*End of function calculateAgeString*/
+
+               /*function to refresh the page called in id="refresh above"*/ 
+        function refreshPage(){
+             window.location.reload();
+        } 
+               /*function to clear the userInput tab when clicked*/
+        function clearTab(){
+            var clear = "";
+            document.getElementById("userInput").value=clear;
+        }
+
+               /*function to format the returned new instance of the date object above to YYYY-MM-DD for subtraction*/
+        function formatDate(date) {
+            var d = new Date(date),
+            month = "" + (d.getMonth() + 1),
+            day = "" + d.getDate(),
+            year = d.getFullYear();
+
+            if (month.length < 2) 
+                month = "0" + month;
+            if (day.length < 2) 
+                day = "0" + day;
+            return [year, month, day].join('-');
+        }
+              /*function to call the calculateAgeString function  when the enter key is pressed*/
+        userInput.addEventListener("keyup", function(event){
+            if(event.keyCode===13){
+                return calculateAgeString();
+            }
+        });
+        
+
+             
+    </script><!--End javascript-->
+</body>      <!--End body-->
+</html>      <!--End html-->

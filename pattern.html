@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Question 3 Assignment 2:C1</title>
+    </head>
+
+<body>
+    
+    <button type = "button" onclick="generatePattern()">Generate Pattern</button>
+        <br>
+        <hr>
+    <div id="demo">
+        
+    </div>
+   
+    <script>            // Beginning of javascript
+
+         var x ="";     // Declaring a variable called X and assigning it a value of an empty string.
+         var j;  
+         var i;        // Declaring the two counter variables, left undefined.
+
+        function generatePattern(){         // Beginning of function to generate the pattern.
+            for (i=15; i>=0; i--){          // i is initialized to 15 and counts down to, including, 0. These two loops complete the top half of the pattern.
+                 x += "<br/>";              // x is now == to a linebreak. loop iterates 16 times causing 16 linebreaks.
+                              
+            for(j=i; j<16; j++){            // inner loop, set == to i, forces the shape, if set to 0, shape becomes square.
+                
+            if(j==i){                       // setting x == to "X" for the first iteration of j. (tallest vertical line on the left)              
+               x+="X";   
+                                            // first if/else block sets each vertical line of X + O in position.(relative to i)
+
+            }else if(j==i+1 || j==i+3 || j==i+5 || j==i+7 || j==i+9 || j==i+11 || j==i+13 || j==i+15 ) {
+               x += "O";
+
+            }else if(j==i+2 || j==i+4 || j==i+6 || j==i+8 || j==i+10 || j==i+12 || j==i+14) {
+               x += "X";
+            }
+          }                                  //end top half inner loop j.
+        }                                    //end top half outer loop i.
+
+        for (i=0; i<=16; i++){             // Beginning of bottom half of pattern.
+            x += "<br/>" ;
+           for(j=i; j<15; j++){            // Same logic used as above. 
+            if(j==i){
+                 x+="X";
+            }else if(j==i+1 || j==i+3 || j==i+5 || j==i+7 || j==i+9 || j==i+11 || j==i+13 || j==i+15) {
+               x += "O";
+            }else if(j==i+2 || j==i+4 || j==i+6 || j==i+8 || j==i+10 || j==i+12 || j==i+14 ) {
+               x += "X";
+
+            }                            //end if else logic
+          }                              // end bottom half inner loop j.
+        }                                // end bottom half outer loop i.
+           
+          document.getElementById("demo").innerHTML= x;    // Passing the value of x to the paragraph with id = demo.      
+
+     }                                  // end of function generatePattern.
+    </script>                           <!-- end of javascript. -->
+</body>
+</html>
